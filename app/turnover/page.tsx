@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import AdmissionsVsDismissalsChart from "@/components/dashboard/turnover/AdmissionsVsDismissalsChart";
 import DismissalReasonsCard from "@/components/dashboard/turnover/DismissalReasonsCard";
 import TenureAtDismissalChart from "@/components/dashboard/turnover/TenureAtDismissalChart";
@@ -9,6 +10,7 @@ import { kpiTurnoverData } from "@/lib/mock/turnover";
 export default function TurnoverPage(): React.ReactElement {
   return (
     <div className="flex w-full min-w-0 flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {kpiTurnoverData.map((item) => (
           <TurnoverKpiMiniCard key={item.label} item={item} />

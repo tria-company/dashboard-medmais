@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import ExpiredVacationTableCard from "@/components/dashboard/ferias/ExpiredVacationTableCard";
 import VacationCalendarCard from "@/components/dashboard/ferias/VacationCalendarCard";
 import VacationCostProjectionCard from "@/components/dashboard/ferias/VacationCostProjectionCard";
@@ -8,6 +9,7 @@ import { kpiFeriasData } from "@/lib/mock/ferias";
 export default function FeriasPage(): React.ReactElement {
   return (
     <div className="flex w-full min-w-0 flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {kpiFeriasData.map((item) => (
           <VacationKpiMiniCard key={item.label} item={item} />

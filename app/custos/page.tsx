@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import CostByClientChartCard from "@/components/dashboard/custos/CostByClientChartCard";
 import CostCompositionStackedChartCard from "@/components/dashboard/custos/CostCompositionStackedChartCard";
 import CostsKpiMiniCard from "@/components/dashboard/custos/CostsKpiMiniCard";
@@ -9,6 +10,7 @@ import { kpisCosts } from "@/lib/mock/costs";
 export default function CustosPage(): React.ReactElement {
   return (
     <div className="flex w-full min-w-0 flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {kpisCosts.map((item) => (
           <CostsKpiMiniCard key={item.label} item={item} />

@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import AbsenceHeatmap from "@/components/dashboard/ponto/AbsenceHeatmap";
 import AbsenceStatsCard from "@/components/dashboard/ponto/AbsenceStatsCard";
 import AbsenceTable from "@/components/dashboard/ponto/AbsenceTable";
@@ -9,6 +10,7 @@ import { kpiPontoData } from "@/lib/mock/ponto";
 export default function PontoPage(): React.ReactElement {
   return (
     <div className="flex flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {kpiPontoData.map((item) => (
           <KpiMiniCard key={item.label} item={item} />

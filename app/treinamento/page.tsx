@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import CostByClientGroupedBarsCard from "@/components/dashboard/treinamento/CostByClientGroupedBarsCard";
 import MandatoryNRComplianceProgressCard from "@/components/dashboard/treinamento/MandatoryNRComplianceProgressCard";
 import OverdueTrainingTableCard from "@/components/dashboard/treinamento/OverdueTrainingTableCard";
@@ -9,6 +10,7 @@ import { trainingKpis } from "@/lib/mock/training";
 export default function TreinamentoPage(): React.ReactElement {
   return (
     <div className="flex w-full min-w-0 flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {trainingKpis.map((item) => (
           <TrainingKpiMiniCard key={item.label} item={item} />

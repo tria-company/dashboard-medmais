@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import ComplianceGlobalIndexRadar from "@/components/dashboard/compliance/ComplianceGlobalIndexRadar";
 import ComplianceKpiMiniCard from "@/components/dashboard/compliance/ComplianceKpiMiniCard";
 import ComplianceProgressCard from "@/components/dashboard/compliance/ComplianceProgressCard";
@@ -9,6 +10,7 @@ import { kpiComplianceData } from "@/lib/mock/compliance";
 export default function CompliancePage(): React.ReactElement {
   return (
     <div className="flex w-full min-w-0 flex-col gap-10">
+      <FiltroPostoEmpresa />
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
         {kpiComplianceData.map((item) => (
           <ComplianceKpiMiniCard key={item.label} item={item} />

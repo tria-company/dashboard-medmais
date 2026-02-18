@@ -1,3 +1,4 @@
+import FiltroPostoEmpresa from "@/components/filtro-posto-empresa";
 import ClientesHeadcount from "@/components/dashboard/ClientesHeadcount";
 import CoberturaGauge from "@/components/dashboard/CoberturaGauge";
 import Headcount12Meses from "@/components/dashboard/Headcount12Meses";
@@ -10,6 +11,7 @@ import VisaoGeralOperacional from "@/components/dashboard/VisaoGeralOperacional"
 export default function ExecutivoPage(): React.ReactElement {
   return (
     <div className="flex flex-col gap-10">
+      <FiltroPostoEmpresa />
       <KpiRow />
       <div className="grid items-stretch gap-8 min-[1440px]:grid-cols-12">
         <div className="flex min-[1440px]:col-span-6">
