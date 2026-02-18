@@ -13,8 +13,8 @@ const ICON_MAP = {
 
 export default function KpiRow(): React.ReactElement {
   return (
-    <div className="flex w-full flex-wrap items-center justify-between gap-6">
-      <div className="flex flex-1 flex-wrap items-center gap-8">
+    <div className="relative flex w-full flex-wrap items-center justify-center gap-8">
+      <div className="flex flex-wrap items-center justify-center gap-8">
         {kpiData.map((kpi) => (
           <div
             key={kpi.label}
@@ -60,7 +60,7 @@ export default function KpiRow(): React.ReactElement {
           </div>
         ))}
       </div>
-      <div className="flex shrink-0 flex-col items-end justify-center text-right text-sm text-gray-500">
+      <div className="absolute right-0 top-1/2 flex -translate-y-1/2 flex-col items-end text-right text-sm text-gray-500">
         <span className="font-medium capitalize text-gray-800">
           {getCurrentDateFormatted()}
         </span>

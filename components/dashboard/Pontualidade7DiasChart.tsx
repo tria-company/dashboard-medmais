@@ -92,13 +92,7 @@ export default function Pontualidade7DiasChart(): React.ReactElement {
               iconType="square"
               iconSize={10}
               formatter={(value) => (
-                <span className="text-zinc-600">
-                  {value === "noHorario"
-                    ? "No horário"
-                    : value === "atrasados"
-                      ? "Atrasados"
-                      : "Não compareceu"}
-                </span>
+                <span className="text-zinc-600">{value}</span>
               )}
             />
             <Bar

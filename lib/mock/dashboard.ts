@@ -110,6 +110,93 @@ export const coberturaPostosData: CoberturaPostos = {
   variacaoPercentual: 4.7,
 };
 
+/** List of companies for cobertura filter (mock). */
+export const EMPRESAS_COBERTURA = [
+  "Todas",
+  "Petrobras",
+  "Vale",
+  "Ambev",
+  "JBS",
+  "Bradesco",
+  "Itaú",
+  "Mag. Luiza",
+] as const;
+
+/** Mock cobertura data per company (key = empresa name). "Todas" uses coberturaPostosData. */
+export const coberturaPostosPorEmpresa: Record<string, CoberturaPostos> = {
+  Todas: coberturaPostosData,
+  Petrobras: {
+    percentualCobertos: 92,
+    semAlteracao: 156,
+    cobertoComHE: 8,
+    descoberto: 3,
+    totalPostos: 167,
+    alertasReservaExcedida: "2 por 3 pendentes",
+    postosSemCoberturaCriticos: 0,
+    variacaoPercentual: 2.1,
+  },
+  Vale: {
+    percentualCobertos: 85,
+    semAlteracao: 42,
+    cobertoComHE: 4,
+    descoberto: 5,
+    totalPostos: 51,
+    alertasReservaExcedida: "1 por 2 pendentes",
+    postosSemCoberturaCriticos: 1,
+    variacaoPercentual: -0.8,
+  },
+  Ambev: {
+    percentualCobertos: 78,
+    semAlteracao: 28,
+    cobertoComHE: 2,
+    descoberto: 6,
+    totalPostos: 36,
+    alertasReservaExcedida: "4 por 6 pendentes",
+    postosSemCoberturaCriticos: 2,
+    variacaoPercentual: 5.2,
+  },
+  JBS: {
+    percentualCobertos: 89,
+    semAlteracao: 18,
+    cobertoComHE: 1,
+    descoberto: 2,
+    totalPostos: 21,
+    alertasReservaExcedida: "0 pendentes",
+    postosSemCoberturaCriticos: 0,
+    variacaoPercentual: 1.4,
+  },
+  Bradesco: {
+    percentualCobertos: 94,
+    semAlteracao: 12,
+    cobertoComHE: 0,
+    descoberto: 1,
+    totalPostos: 13,
+    alertasReservaExcedida: "0 pendentes",
+    postosSemCoberturaCriticos: 0,
+    variacaoPercentual: 3.0,
+  },
+  Itaú: {
+    percentualCobertos: 81,
+    semAlteracao: 22,
+    cobertoComHE: 3,
+    descoberto: 4,
+    totalPostos: 29,
+    alertasReservaExcedida: "1 por 1 pendente",
+    postosSemCoberturaCriticos: 1,
+    variacaoPercentual: -1.2,
+  },
+  "Mag. Luiza": {
+    percentualCobertos: 76,
+    semAlteracao: 14,
+    cobertoComHE: 5,
+    descoberto: 4,
+    totalPostos: 23,
+    alertasReservaExcedida: "3 por 5 pendentes",
+    postosSemCoberturaCriticos: 2,
+    variacaoPercentual: 4.0,
+  },
+};
+
 export const visaoGeralOperacionalData: MetricaOperacional[] = [
   {
     label: "Trocas Atrasadas",

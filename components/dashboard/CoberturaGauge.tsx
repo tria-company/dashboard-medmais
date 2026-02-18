@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { coberturaPostosData } from "@/lib/mock/dashboard";
+import {
+  coberturaPostosPorEmpresa,
+  EMPRESAS_COBERTURA,
+} from "@/lib/mock/dashboard";
 import CardBase from "./CardBase";
 
 const ANIMATION_DURATION_MS = 800;
@@ -39,7 +42,11 @@ function describeSemicircleArc(
 }
 
 export default function CoberturaGauge(): React.ReactElement {
-  const percentual = coberturaPostosData.percentualCobertos;
+  const [empresaSelecionada, setEmpresaSelecionada] = useState<string>(
+    EMPRESAS_COBERTURA[0]
+  );
+  const data = coberturaPostosPorEmpresa[empresaSelecionada] ?? coberturaPostosPorEmpresa.Todas;
+  const percentual = data.percentualCobertos;
   const [displayedPercent, setDisplayedPercent] = useState(0);
   const cx = 100;
   const cy = 96;
@@ -79,6 +86,27 @@ export default function CoberturaGauge(): React.ReactElement {
 
   return (
     <CardBase title="Cobertura de Postos — Agora" compact>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-3">
+        <label
+          htmlFor="cobertura-empresa"
+          className="text-xs font-medium text-gray-600 sm:text-sm"
+        >
+          Empresa
+        </label>
+        <select
+          id="cobertura-empresa"
+          value={empresaSelecionada}
+          onChange={(e) => setEmpresaSelecionada(e.target.value)}
+          className="rounded-lg border border-[#E4E4E7] bg-white px-3 py-1.5 text-sm text-gray-700"
+          aria-label="Filtrar por empresa"
+        >
+          {EMPRESAS_COBERTURA.map((empresa) => (
+            <option key={empresa} value={empresa}>
+              {empresa}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:gap-4">
         <div className="relative flex min-h-[80px] w-full shrink-0 justify-center pt-0 sm:min-h-[100px] sm:max-w-[160px] sm:mx-auto md:min-h-[120px] md:max-w-[200px] lg:min-h-[140px] lg:max-w-[180px] lg:mx-auto xl:mx-0 xl:min-h-[160px] xl:max-w-[220px] xl:pt-4">
           <div className="relative h-[72px] w-full max-w-[120px] sm:h-[90px] sm:max-w-[150px] md:h-[110px] md:max-w-[180px] lg:h-[130px] lg:max-w-[170px] xl:h-[150px] xl:max-w-[210px]">
@@ -111,7 +139,7 @@ export default function CoberturaGauge(): React.ReactElement {
                   color: "#C0392B",
                 }}
               >
-                ↑ {coberturaPostosData.variacaoPercentual}%
+                {data.variacaoPercentual >= 0 ? "↑" : "↓"} {Math.abs(data.variacaoPercentual)}%
               </span>
             </div>
           </div>
@@ -123,7 +151,7 @@ export default function CoberturaGauge(): React.ReactElement {
               className="rounded px-2 py-0.5 text-xs font-bold"
               style={{ backgroundColor: "#D4EDDA", color: "#155724" }}
             >
-              {coberturaPostosData.semAlteracao}
+              {data.semAlteracao}
             </span>
           </div>
           <div className="flex flex-col gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:px-3 sm:py-2">
@@ -132,7 +160,7 @@ export default function CoberturaGauge(): React.ReactElement {
               className="rounded px-2 py-0.5 text-xs font-bold"
               style={{ backgroundColor: "#FFF3CD", color: "#856404" }}
             >
-              {coberturaPostosData.cobertoComHE}
+              {data.cobertoComHE}
             </span>
           </div>
           <div className="flex flex-col gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:px-3 sm:py-2">
@@ -141,7 +169,7 @@ export default function CoberturaGauge(): React.ReactElement {
               className="rounded px-2 py-0.5 text-xs font-bold"
               style={{ backgroundColor: "#F8D7DA", color: "#721c24" }}
             >
-              {coberturaPostosData.descoberto}
+              {data.descoberto}
             </span>
           </div>
           <div className="mt-1.5 w-full min-w-0 sm:mt-3">
@@ -149,19 +177,19 @@ export default function CoberturaGauge(): React.ReactElement {
               <div className="min-w-0 rounded-lg bg-gray-100 px-2.5 py-2 sm:px-3 sm:py-2">
                 <p className="text-[10px] text-gray-500 sm:text-xs">Total de postos</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 sm:text-base">
-                  {coberturaPostosData.totalPostos}
+                  {data.totalPostos}
                 </p>
               </div>
               <div className="min-w-0 rounded-lg bg-gray-100 px-2.5 py-2 sm:px-3 sm:py-2">
                 <p className="text-[10px] text-gray-500 sm:text-xs">Cobertura reserva acionada</p>
                 <p className="mt-0.5 text-xs font-medium text-gray-800 sm:text-sm">
-                  {coberturaPostosData.alertasReservaExcedida}
+                  {data.alertasReservaExcedida}
                 </p>
               </div>
               <div className="min-w-0 rounded-lg bg-gray-100 px-2.5 py-2 sm:px-3 sm:py-2">
                 <p className="text-[10px] text-gray-500 sm:text-xs">Postos SEM cobertura</p>
                 <p className="mt-0.5 text-sm font-bold text-red-600 sm:text-base">
-                  {coberturaPostosData.postosSemCoberturaCriticos} críticos
+                  {data.postosSemCoberturaCriticos} críticos
                 </p>
               </div>
             </div>
