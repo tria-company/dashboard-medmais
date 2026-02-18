@@ -3,7 +3,7 @@
  * Replace with API calls when backend is ready.
  */
 
-export type KpiCostIcon = "folha" | "custoMedio" | "crescimento" | "margem";
+export type KpiCostIcon = "folha" | "custoMedio" | "crescimento" | "margem" | "horasExtras";
 
 export interface KpiCostItem {
   label: string;
@@ -46,6 +46,14 @@ export interface CostByClientItem {
   valor: number;
 }
 
+/** Cost by client with breakdown (Salários, Encargos, Benefícios, Horas Extras). */
+export interface CostByClientDetailItem extends CostByClientItem {
+  salarios: number;
+  encargos: number;
+  beneficios: number;
+  horasExtras: number;
+}
+
 export const kpisCosts: KpiCostItem[] = [
   {
     label: "Folha Total",
@@ -74,6 +82,13 @@ export const kpisCosts: KpiCostItem[] = [
     variationLabel: "+1.5% vs mês anterior",
     variationPositive: true,
     icon: "margem",
+  },
+  {
+    label: "Valor Total em Horas Extras",
+    value: "R$ 28,4k",
+    variationLabel: "+8.2% vs mês anterior",
+    variationPositive: false,
+    icon: "horasExtras",
   },
 ];
 
@@ -172,6 +187,20 @@ export const costByClient: CostByClientItem[] = [
   { cliente: "Santander", valor: 2_900_000 },
   { cliente: "Unimed", valor: 2_500_000 },
   { cliente: "Rede D'Or", valor: 2_200_000 },
+];
+
+/** Cost by client with detailed breakdown for the card. */
+export const costByClientDetail: CostByClientDetailItem[] = [
+  { cliente: "JBS", valor: 8_500_000, salarios: 4_675_000, encargos: 1_870_000, beneficios: 1_275_000, horasExtras: 680_000 },
+  { cliente: "Mag. Luiza", valor: 6_200_000, salarios: 3_410_000, encargos: 1_364_000, beneficios: 930_000, horasExtras: 496_000 },
+  { cliente: "Vale", valor: 5_800_000, salarios: 3_190_000, encargos: 1_276_000, beneficios: 870_000, horasExtras: 464_000 },
+  { cliente: "Ambev", valor: 4_900_000, salarios: 2_695_000, encargos: 1_078_000, beneficios: 735_000, horasExtras: 392_000 },
+  { cliente: "Bradesco", valor: 4_200_000, salarios: 2_310_000, encargos: 924_000, beneficios: 630_000, horasExtras: 336_000 },
+  { cliente: "Petrobras", valor: 3_800_000, salarios: 2_090_000, encargos: 836_000, beneficios: 570_000, horasExtras: 304_000 },
+  { cliente: "Itaú", valor: 3_400_000, salarios: 1_870_000, encargos: 748_000, beneficios: 510_000, horasExtras: 272_000 },
+  { cliente: "Santander", valor: 2_900_000, salarios: 1_595_000, encargos: 638_000, beneficios: 435_000, horasExtras: 232_000 },
+  { cliente: "Unimed", valor: 2_500_000, salarios: 1_375_000, encargos: 550_000, beneficios: 375_000, horasExtras: 200_000 },
+  { cliente: "Rede D'Or", valor: 2_200_000, salarios: 1_210_000, encargos: 484_000, beneficios: 330_000, horasExtras: 176_000 },
 ];
 
 export const COST_COMPOSITION_COLORS = {

@@ -9,7 +9,11 @@ import {
   YAxis,
 } from "recharts";
 import CardBase from "@/components/dashboard/CardBase";
-import { costByClient } from "@/lib/mock/costs";
+import {
+  COST_COMPOSITION_COLORS,
+  costByClientDetail,
+  type CostByClientDetailItem,
+} from "@/lib/mock/costs";
 
 const BAR_COLOR = "#B45309";
 const AXIS_LABEL_COLOR = "#63716E";
@@ -54,7 +58,7 @@ function CustomTooltip({
   payload,
 }: {
   active?: boolean;
-  payload?: Array<{ payload: { cliente: string; valor: number } }>;
+  payload?: Array<{ payload: CostByClientDetailItem }>;
 }): React.ReactElement | null {
   if (!active || !payload?.length) return null;
   const p = payload[0]?.payload;
@@ -64,9 +68,37 @@ function CustomTooltip({
       className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-md"
       role="tooltip"
     >
-      <span className="font-medium text-gray-800">
-        {p.cliente}: {formatCurrency(p.valor)}
-      </span>
+      <p className="mb-2 font-medium text-gray-800">{p.cliente}</p>
+      <ul className="flex flex-col gap-1">
+        <li className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.salarios }}
+          />
+          Salários: {formatCurrency(p.salarios)}
+        </li>
+        <li className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.encargos }}
+          />
+          Encargos: {formatCurrency(p.encargos)}
+        </li>
+        <li className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.beneficios }}
+          />
+          Benefícios: {formatCurrency(p.beneficios)}
+        </li>
+        <li className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.horasExtras }}
+          />
+          Horas Extras: {formatCurrency(p.horasExtras)}
+        </li>
+      </ul>
     </div>
   );
 }
@@ -79,8 +111,46 @@ function darkenHex(hex: string, percent: number): string {
   return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
+function DetailRow({ item }: { item: CostByClientDetailItem }): React.ReactElement {
+  return (
+    <div className="border-b border-gray-100 py-3 last:border-b-0">
+      <p className="mb-2 font-medium text-[#2c3545]">{item.cliente}</p>
+      <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+        <span className="flex items-center gap-1.5">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.salarios }}
+          />
+          Salários: {formatCurrency(item.salarios)}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.encargos }}
+          />
+          Encargos: {formatCurrency(item.encargos)}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.beneficios }}
+          />
+          Benefícios: {formatCurrency(item.beneficios)}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: COST_COMPOSITION_COLORS.horasExtras }}
+          />
+          Horas Extras: {formatCurrency(item.horasExtras)}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function CostByClientChartCard(): React.ReactElement {
-  const maxVal = Math.max(...costByClient.map((d) => d.valor));
+  const maxVal = Math.max(...costByClientDetail.map((d) => d.valor));
   const yDomain = [0, Math.ceil(maxVal / 1_000_000) * 1_000_000];
   const yTicks = [0, 1_000_000, 2_000_000, 5_000_000, 9_000_000].filter(
     (t) => t <= yDomain[1]
@@ -96,10 +166,10 @@ export default function CostByClientChartCard(): React.ReactElement {
           Custo por Cliente
         </h2>
       </div>
-      <div className="h-[380px] w-full min-w-0 lg:h-[400px]">
+      <div className="h-[320px] w-full min-w-0 lg:h-[340px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={costByClient}
+            data={costByClientDetail}
             margin={{ top: 12, right: 12, left: 0, bottom: 56 }}
             barCategoryGap="12%"
             barGap={2}
@@ -143,6 +213,14 @@ export default function CostByClientChartCard(): React.ReactElement {
             />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+      <div className="mt-4 max-h-[280px] overflow-y-auto border-t border-gray-100 pt-4">
+        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-gray-500">
+          Detalhamento por cliente
+        </p>
+        {costByClientDetail.map((item) => (
+          <DetailRow key={item.cliente} item={item} />
+        ))}
       </div>
     </CardBase>
   );

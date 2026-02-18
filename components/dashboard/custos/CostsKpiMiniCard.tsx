@@ -8,6 +8,7 @@ const ICON_MAP: Record<KpiCostItem["icon"], string> = {
   custoMedio: "/people.svg",
   crescimento: "/ArrowRight.svg",
   margem: "/checked.svg",
+  horasExtras: "/clock.svg",
 };
 
 function getIconFilter(icon: KpiCostItem["icon"]): string {
@@ -20,6 +21,8 @@ function getIconFilter(icon: KpiCostItem["icon"]): string {
       return "brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(800%) hue-rotate(360deg)";
     case "margem":
       return "brightness(0) saturate(100%) invert(32%) sepia(78%) saturate(1200%) hue-rotate(100deg)";
+    case "horasExtras":
+      return "brightness(0) saturate(100%) invert(25%) sepia(90%) saturate(2000%) hue-rotate(350deg)";
     default:
       return "none";
   }
