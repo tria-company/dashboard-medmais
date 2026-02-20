@@ -279,6 +279,37 @@ export const REGIOES_MAPA_ORDEM = [
 
 export type RegiaoMapa = (typeof REGIOES_MAPA_ORDEM)[number];
 
+/** Headcount por estado (sigla UF). Valores aleatórios por estado para o mapa. */
+export const headcountPorEstado: Record<string, number> = {
+  AC: 342,
+  AL: 876,
+  AM: 521,
+  AP: 198,
+  BA: 1847,
+  CE: 1123,
+  DF: 2156,
+  ES: 934,
+  GO: 1089,
+  MA: 654,
+  MG: 2891,
+  MS: 445,
+  MT: 567,
+  PA: 723,
+  PB: 612,
+  PE: 1345,
+  PI: 398,
+  PR: 1567,
+  RJ: 2234,
+  RN: 534,
+  RO: 287,
+  RR: 156,
+  RS: 1789,
+  SC: 987,
+  SE: 412,
+  SP: 4521,
+  TO: 378,
+};
+
 export const headcountEstadoPorRegiao: Record<RegiaoMapa, HeadcountEstadoMapa> = {
   Norte: {
     totalColaboradores: "2.180",

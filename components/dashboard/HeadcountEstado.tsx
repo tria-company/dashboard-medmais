@@ -1,103 +1,90 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
-  headcountEstadoPorRegiao,
-  type RegiaoMapa,
-} from "@/lib/mock/dashboard";
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+} from "react-simple-maps";
+import { headcountPorEstado } from "@/lib/mock/dashboard";
 import CardBase from "./CardBase";
 
-interface ZonaRegiao {
-  regiao: RegiaoMapa;
-  left: string;
-  top: string;
-  width: string;
-  height: string;
-  markerLeft: string;
-  markerTop: string;
+const GEO_URL =
+  "https://cdn.jsdelivr.net/gh/codeforamerica/click_that_hood@master/public/data/brazil-states.geojson";
+
+const COR_BASE = "#C44B6A";
+const COR_MIN = "#F8C8C8";
+const COR_MAX = "#8B2942";
+
+function getCorPorValor(valor: number, min: number, max: number): string {
+  if (max === min) return COR_BASE;
+  const t = (valor - min) / (max - min);
+  const r = (n: number, m: number) => Math.round(n + t * (m - n));
+  const hex = (x: number) => x.toString(16).padStart(2, "0");
+  const parse = (h: string) => ({
+    r: parseInt(h.slice(1, 3), 16),
+    g: parseInt(h.slice(3, 5), 16),
+    b: parseInt(h.slice(5, 7), 16),
+  });
+  const a = parse(COR_MIN);
+  const b = parse(COR_MAX);
+  return `#${hex(r(a.r, b.r))}${hex(r(a.g, b.g))}${hex(r(a.b, b.b))}`;
 }
 
-const ZONAS: ZonaRegiao[] = [
-  {
-    regiao: "Norte",
-    left: "8%",
-    top: "6%",
-    width: "32%",
-    height: "28%",
-    markerLeft: "28%",
-    markerTop: "20%",
-  },
-  {
-    regiao: "Nordeste",
-    left: "32%",
-    top: "5%",
-    width: "38%",
-    height: "38%",
-    markerLeft: "50%",
-    markerTop: "26%",
-  },
-  {
-    regiao: "Centro-Oeste",
-    left: "22%",
-    top: "38%",
-    width: "32%",
-    height: "32%",
-    markerLeft: "42%",
-    markerTop: "50%",
-  },
-  {
-    regiao: "Sudeste",
-    left: "42%",
-    top: "42%",
-    width: "48%",
-    height: "42%",
-    markerLeft: "62%",
-    markerTop: "58%",
-  },
-  {
-    regiao: "Sul",
-    left: "35%",
-    top: "78%",
-    width: "42%",
-    height: "20%",
-    markerLeft: "56%",
-    markerTop: "83%",
-  },
-];
+interface TooltipState {
+  nome: string;
+  sigla: string;
+  valor: number;
+  x: number;
+  y: number;
+}
 
 export default function HeadcountEstado(): React.ReactElement {
-  const [hoveredRegiao, setHoveredRegiao] = useState<RegiaoMapa | null>(null);
-  const [tooltipXY, setTooltipXY] = useState({ x: 0, y: 0 });
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const { minVal, maxVal } = useMemo(() => {
+    const vals = Object.values(headcountPorEstado).filter(Number.isFinite);
+    return {
+      minVal: Math.min(...vals, 0),
+      maxVal: Math.max(...vals, 1),
+    };
+  }, []);
+
   const handleMouseEnter = useCallback(
-    (regiao: RegiaoMapa, e: React.MouseEvent<HTMLDivElement>) => {
-      setHoveredRegiao(regiao);
+    (geo: { properties: { name?: string; sigla?: string } }, evt: React.MouseEvent<SVGPathElement>) => {
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setTooltipXY({ x, y });
+      const sigla = (geo.properties?.sigla ?? "").toUpperCase();
+      const valor = headcountPorEstado[sigla] ?? 0;
+      setTooltip({
+        nome: geo.properties?.name ?? sigla,
+        sigla,
+        valor,
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top,
+      });
     },
     []
   );
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!hoveredRegiao) return;
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setTooltipXY({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    },
-    [hoveredRegiao]
-  );
+  const handleMouseMove = useCallback((evt: React.MouseEvent<SVGPathElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setTooltip((prev) =>
+      prev
+        ? {
+            ...prev,
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top,
+          }
+        : null
+    );
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setHoveredRegiao(null);
+    setTooltip(null);
   }, []);
 
   return (
@@ -105,96 +92,64 @@ export default function HeadcountEstado(): React.ReactElement {
       <div className="-mt-1 mb-3 border-b border-gray-100" />
       <div
         ref={containerRef}
-        className="relative aspect-447/432 w-full max-w-[85%] mx-auto overflow-hidden"
+        className="relative w-full max-w-full mx-auto overflow-hidden rounded-lg bg-gray-50/50"
       >
-        <Image
-          src="/mapa.svg"
-          alt="Mapa do Brasil"
-          fill
-          className="object-contain"
-        />
-        {ZONAS.map((z) => (
-          <div
-            key={z.regiao}
-            className="absolute cursor-default rounded transition-colors duration-150 hover:bg-[#C44B6A]/5"
-            style={{
-              left: z.left,
-              top: z.top,
-              width: z.width,
-              height: z.height,
-            }}
-            onMouseEnter={(e) => handleMouseEnter(z.regiao, e)}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            role="button"
-            tabIndex={0}
-            onFocus={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const parent = containerRef.current?.getBoundingClientRect();
-              if (parent) {
-                setHoveredRegiao(z.regiao);
-                setTooltipXY({
-                  x: rect.left - parent.left + rect.width / 2,
-                  y: rect.top - parent.top,
-                });
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{
+            center: [-54, -14],
+            scale: 950,
+          }}
+          className="w-full aspect-447/432"
+          style={{ width: "100%", height: "auto" }}
+        >
+          <ZoomableGroup center={[0, 0]} zoom={1} minZoom={0.8} maxZoom={1.2}>
+            <Geographies geography={GEO_URL}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const sigla = (geo.properties?.sigla ?? "").toUpperCase();
+                  const valor = headcountPorEstado[sigla] ?? 0;
+                  const fill = getCorPorValor(valor, minVal, maxVal);
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      fill={fill}
+                      stroke="#FFFFFF"
+                      strokeWidth={0.6}
+                      style={{
+                        default: { outline: "none" },
+                        hover: {
+                          fill: COR_BASE,
+                          outline: "none",
+                          cursor: "pointer",
+                        },
+                        pressed: { outline: "none" },
+                      }}
+                      onMouseEnter={(evt) => handleMouseEnter(geo, evt)}
+                      onMouseMove={handleMouseMove}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                  );
+                })
               }
-            }}
-            onBlur={handleMouseLeave}
-            aria-label={`Headcount ${z.regiao}`}
-          />
-        ))}
-        {ZONAS.map((z) => (
+            </Geographies>
+          </ZoomableGroup>
+        </ComposableMap>
+        {tooltip && (
           <div
-            key={`marker-${z.regiao}`}
-            className="pointer-events-none absolute z-1 -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute z-10 w-[160px] rounded-lg border border-gray-100 bg-white/95 px-3 py-2.5 shadow-lg backdrop-blur-sm"
             style={{
-              left: z.markerLeft,
-              top: z.markerTop,
+              left: Math.min(Math.max(10, tooltip.x + 10), 320),
+              top: Math.min(Math.max(10, tooltip.y + 10), 380),
             }}
           >
-            <span
-              className={`block rounded-full border border-white shadow-sm transition-transform duration-150 ${
-                hoveredRegiao === z.regiao
-                  ? "h-3 w-3 bg-[#C44B6A]"
-                  : "h-2.5 w-2.5 bg-[#8B2942]"
-              }`}
-            />
-          </div>
-        ))}
-        {hoveredRegiao && (
-          <div
-            className="pointer-events-none absolute z-10 w-[140px] rounded border border-gray-100 bg-white/95 px-2.5 py-2 shadow-sm backdrop-blur-sm"
-            style={{
-              left: Math.min(
-                Math.max(0, tooltipXY.x - 70),
-                (containerRef.current?.offsetWidth ?? 400) - 140
-              ),
-              top: Math.min(
-                Math.max(0, tooltipXY.y - 6),
-                (containerRef.current?.offsetHeight ?? 240) - 120
-              ),
-            }}
-          >
-            <p className="mb-1.5 text-[11px] font-semibold leading-tight text-gray-900">
-              Colaboradores — {headcountEstadoPorRegiao[hoveredRegiao].totalColaboradores}
+            <p className="mb-1 text-xs font-semibold leading-tight text-gray-900">
+              {tooltip.nome} ({tooltip.sigla})
             </p>
-            <ul className="space-y-0.5">
-              {headcountEstadoPorRegiao[hoveredRegiao].porTipo.map((item) => (
-                <li
-                  key={item.tipo}
-                  className="flex items-center gap-1.5 text-[10px] text-gray-600"
-                >
-                  <span
-                    className="h-1 w-1 shrink-0 rounded-[1px]"
-                    style={{ backgroundColor: item.cor }}
-                  />
-                  <span>{item.tipo}:</span>
-                  <span className="ml-auto font-medium text-gray-800">
-                    {item.valor}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <p className="text-sm font-medium text-[#8B2942]">
+              {tooltip.valor.toLocaleString("pt-BR")} colaboradores
+            </p>
           </div>
         )}
       </div>
