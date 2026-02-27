@@ -76,6 +76,7 @@ export interface GeolocationPunchSummary {
 export interface PontoForaZonaRankingItem {
   nome: string;
   posto: string;
+  cliente: string;
   quantidadePontosFora: number;
 }
 
@@ -365,15 +366,32 @@ export const geolocationPunchSummary: GeolocationPunchSummary = {
 };
 
 export const pontoForaZonaRanking: PontoForaZonaRankingItem[] = [
-  { nome: "Carlos M. Souza", posto: "Portaria principal", quantidadePontosFora: 24 },
-  { nome: "Ana P. Costa", posto: "Guarita Leste", quantidadePontosFora: 18 },
-  { nome: "Roberto S. Oliveira", posto: "CFTV - Monitoramento", quantidadePontosFora: 15 },
-  { nome: "Daniel V. Ribeiro", posto: "Manutenção Elétrica", quantidadePontosFora: 12 },
-  { nome: "Maria F. Lima", posto: "Recepção", quantidadePontosFora: 10 },
-  { nome: "José A. Silva", posto: "Controle de Acesso", quantidadePontosFora: 8 },
-  { nome: "Fernanda T. Santos", posto: "Ronda externa", quantidadePontosFora: 6 },
-  { nome: "Paulo R. Mendes", posto: "Almoxarifado", quantidadePontosFora: 5 },
+  { nome: "Carlos M. Souza", posto: "Portaria principal", cliente: "Petrobras", quantidadePontosFora: 24 },
+  { nome: "Ana P. Costa", posto: "Guarita Leste", cliente: "Petrobras", quantidadePontosFora: 18 },
+  { nome: "Roberto S. Oliveira", posto: "CFTV - Monitoramento", cliente: "Vale", quantidadePontosFora: 15 },
+  { nome: "Daniel V. Ribeiro", posto: "Manutenção Elétrica", cliente: "JBS", quantidadePontosFora: 12 },
+  { nome: "Maria F. Lima", posto: "Recepção", cliente: "Bradesco", quantidadePontosFora: 10 },
+  { nome: "José A. Silva", posto: "Controle de Acesso", cliente: "Itaú", quantidadePontosFora: 8 },
+  { nome: "Fernanda T. Santos", posto: "Ronda externa", cliente: "Ambev", quantidadePontosFora: 6 },
+  { nome: "Paulo R. Mendes", posto: "Almoxarifado", cliente: "Mag. Luiza", quantidadePontosFora: 5 },
 ].sort((a, b) => b.quantidadePontosFora - a.quantidadePontosFora);
+
+/** Ranking de clientes por total de pontos batidos fora da zona (derivado do ranking de colaboradores). */
+export interface PontoForaZonaPorClienteItem {
+  cliente: string;
+  quantidadePontosFora: number;
+}
+
+export const pontoForaZonaRankingPorCliente: PontoForaZonaPorClienteItem[] = (() => {
+  const map = new Map<string, number>();
+  pontoForaZonaRanking.forEach((item) => {
+    const prev = map.get(item.cliente) ?? 0;
+    map.set(item.cliente, prev + item.quantidadePontosFora);
+  });
+  return Array.from(map.entries())
+    .map(([cliente, quantidadePontosFora]) => ({ cliente, quantidadePontosFora }))
+    .sort((a, b) => b.quantidadePontosFora - a.quantidadePontosFora);
+})();
 
 // --- Todos os pontos por funcionário (lista + popup) ---
 const placeholderPhoto =

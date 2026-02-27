@@ -135,6 +135,7 @@ export default function AllPunchesByEmployeeCard(): React.ReactElement {
                 <th className="pb-2 pr-3">Funcionário</th>
                 <th className="pb-2 pr-3">Data/hora</th>
                 <th className="pb-2 pr-3">Posto</th>
+                <th className="pb-2 pr-3">Cliente</th>
                 <th className="pb-2" />
               </tr>
             </thead>
@@ -152,6 +153,7 @@ export default function AllPunchesByEmployeeCard(): React.ReactElement {
                     {formatDataHora(row.dataHora)}
                   </td>
                   <td className="py-2.5 pr-3 text-gray-600">{row.posto}</td>
+                  <td className="py-2.5 pr-3 text-gray-600">{row.cliente}</td>
                   <td className="py-2.5 text-right">
                     <button
                       type="button"
@@ -185,6 +187,9 @@ export default function AllPunchesByEmployeeCard(): React.ReactElement {
           <div className="flex flex-col gap-4">
             <p className="text-base font-semibold text-[#2c3545]">
               {selectedPonto.funcionarioNome}
+            </p>
+            <p className="text-sm text-gray-600">
+              Cliente: {selectedPonto.cliente}
             </p>
             <p className="text-sm text-gray-600">
               Horário: {formatDataHora(selectedPonto.dataHora)}
