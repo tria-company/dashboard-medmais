@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { AUTH_COOKIE_NAME } from "@/lib/auth-constants";
+
+// Duplicado aqui para evitar importar módulos externos no Edge Middleware.
+const AUTH_COOKIE_NAME = "auth-token";
 
 const LOGIN_PATH = "/login";
 const DASHBOARD_PATH = "/dashboard";
