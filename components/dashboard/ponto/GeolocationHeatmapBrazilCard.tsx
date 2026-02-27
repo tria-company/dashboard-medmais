@@ -77,6 +77,13 @@ interface TooltipState {
   y: number;
 }
 
+type GeographyWithClickProps = React.ComponentProps<typeof Geography> & {
+  onClick?: (event: React.MouseEvent<SVGPathElement>) => void;
+};
+
+const GeographyWithClick =
+  Geography as React.ComponentType<GeographyWithClickProps>;
+
 export default function GeolocationHeatmapBrazilCard(): React.ReactElement {
   const [estadoSelecionado, setEstadoSelecionado] = useState<string | null>(
     null
@@ -201,7 +208,7 @@ export default function GeolocationHeatmapBrazilCard(): React.ReactElement {
                       ? getCorPorValor(valor, minVal, maxVal)
                       : COR_CINZA;
                   return (
-                    <Geography
+                  <GeographyWithClick
                       key={geo.rsmKey}
                       geography={geo}
                       fill={fill}

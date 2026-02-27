@@ -50,7 +50,7 @@ export default function GlobalFiltersBar(): React.ReactElement {
           label="Região"
           value={filters.region ?? ""}
           placeholder="Todas"
-          onChange={(value) => setRegion(value || null)}
+          onChange={(value) => setRegion((value || null) as any)}
           options={availableRegions}
         />
 
@@ -59,7 +59,7 @@ export default function GlobalFiltersBar(): React.ReactElement {
           label="Contrato"
           value={filters.contract ?? ""}
           placeholder="Todos"
-          onChange={(value) => setContract(value || null)}
+          onChange={(value) => setContract((value || null) as any)}
           options={availableContracts}
         />
 
@@ -68,7 +68,7 @@ export default function GlobalFiltersBar(): React.ReactElement {
           label="Posto"
           value={filters.posto ?? ""}
           placeholder="Todos"
-          onChange={(value) => setPosto(value || null)}
+          onChange={(value) => setPosto((value || null) as any)}
           options={availablePostos}
         />
 
@@ -77,7 +77,7 @@ export default function GlobalFiltersBar(): React.ReactElement {
           label="Relevância"
           value={filters.relevance ?? ""}
           placeholder="Padrão"
-          onChange={(value) => setRelevance(value || null)}
+          onChange={(value) => setRelevance((value || null) as any)}
           options={relevanceOptions}
         />
 
@@ -86,7 +86,7 @@ export default function GlobalFiltersBar(): React.ReactElement {
           label="Período"
           value={filters.period ?? ""}
           placeholder="Últimos 30 dias"
-          onChange={(value) => setPeriod(value || null)}
+          onChange={(value) => setPeriod((value || null) as any)}
           options={periodOptions}
         />
 

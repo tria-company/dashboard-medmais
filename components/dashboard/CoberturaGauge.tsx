@@ -51,7 +51,10 @@ export default function CoberturaGauge(): React.ReactElement {
   // Se houver contrato selecionado no filtro global e ele existir na lista de
   // empresas de cobertura, utilizamos esse valor como seleção.
   const effectiveEmpresa = useMemo(() => {
-    if (filters.contract && EMPRESAS_COBERTURA.includes(filters.contract)) {
+    if (
+      filters.contract &&
+      (EMPRESAS_COBERTURA as readonly string[]).includes(filters.contract)
+    ) {
       return filters.contract;
     }
     return empresaSelecionada;

@@ -49,6 +49,7 @@ export interface TurnoverUnitRow {
 export interface UltimoDesligamentoRow {
   colaborador: string;
   unidade: string;
+  cliente: string;
   dataAdmissao: string;
   dataDesligamento: string;
   custo: string;
@@ -142,9 +143,44 @@ export const turnoverUnitsTableData: TurnoverUnitRow[] = [
 ];
 
 export const ultimosDesligamentosData: UltimoDesligamentoRow[] = [
-  { colaborador: "Carlos M. Gonçalves", unidade: "JBS - Goiânia", dataAdmissao: "02/01/2025", dataDesligamento: "23/02/2026", custo: "R$ 5.000,00" },
-  { colaborador: "Carlos M. Gonçalves", unidade: "Mag. Luiza - Florianópolis", dataAdmissao: "02/01/2025", dataDesligamento: "23/02/2026", custo: "R$ 4.000,00" },
-  { colaborador: "Carlos M. Gonçalves", unidade: "Vale - Rio de Janeiro", dataAdmissao: "02/01/2025", dataDesligamento: "23/02/2026", custo: "R$ 3.000,00" },
-  { colaborador: "Carlos M. Gonçalves", unidade: "Ambev - Belo Horizonte", dataAdmissao: "02/01/2025", dataDesligamento: "23/02/2026", custo: "R$ 2.000,00" },
-  { colaborador: "Carlos M. Gonçalves", unidade: "Itaú - São Paulo", dataAdmissao: "02/01/2025", dataDesligamento: "23/02/2026", custo: "R$ 1.000,00" },
+  {
+    colaborador: "Carlos M. Gonçalves",
+    unidade: "JBS - Goiânia",
+    cliente: "JBS",
+    dataAdmissao: "02/01/2025",
+    dataDesligamento: "23/02/2026",
+    custo: "R$ 5.000,00",
+  },
+  {
+    colaborador: "Carlos M. Gonçalves",
+    unidade: "Mag. Luiza - Florianópolis",
+    cliente: "Mag. Luiza",
+    dataAdmissao: "02/01/2025",
+    dataDesligamento: "23/02/2026",
+    custo: "R$ 4.000,00",
+  },
+  {
+    colaborador: "Carlos M. Gonçalves",
+    unidade: "Vale - Rio de Janeiro",
+    cliente: "Vale",
+    dataAdmissao: "02/01/2025",
+    dataDesligamento: "23/02/2026",
+    custo: "R$ 3.000,00",
+  },
+  {
+    colaborador: "Carlos M. Gonçalves",
+    unidade: "Ambev - Belo Horizonte",
+    cliente: "Ambev",
+    dataAdmissao: "02/01/2025",
+    dataDesligamento: "23/02/2026",
+    custo: "R$ 2.000,00",
+  },
+  {
+    colaborador: "Carlos M. Gonçalves",
+    unidade: "Itaú - São Paulo",
+    cliente: "Itaú",
+    dataAdmissao: "02/01/2025",
+    dataDesligamento: "23/02/2026",
+    custo: "R$ 1.000,00",
+  },
 ];

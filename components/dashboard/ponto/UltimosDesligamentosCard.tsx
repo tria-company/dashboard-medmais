@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import CardBase from "@/components/dashboard/CardBase";
-import type { DesligamentoRow } from "@/lib/mock/ponto";
-import { ultimosDesligamentosData } from "@/lib/mock/ponto";
+import type { UltimoDesligamentoRow } from "@/lib/mock/turnover";
+import { ultimosDesligamentosData } from "@/lib/mock/turnover";
 
 export default function UltimosDesligamentosCard(): React.ReactElement {
   const [unidade, setUnidade] = useState("");
