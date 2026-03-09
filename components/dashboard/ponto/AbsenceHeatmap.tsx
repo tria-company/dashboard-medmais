@@ -1,10 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import CardBase from "@/components/dashboard/CardBase";
-import { heatmapData, heatmapLegend, heatmapUnidadeOptions } from "@/lib/mock/ponto";
+import {
+  heatmapData,
+  heatmapHorasData,
+  heatmapLegend,
+  heatmapUnidadeOptions,
+} from "@/lib/mock/ponto";
 
-const DAYS = ["Segunda", "Terça", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"];
+const DAYS = [
+  "Segunda",
+  "Terça",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado",
+  "Domingo",
+];
 
 function getHeatmapColor(value: number): string {
   if (value < 1) return "#DCFCE7";
@@ -14,11 +27,58 @@ function getHeatmapColor(value: number): string {
   return "#DC2626";
 }
 
+interface TooltipState {
+  week: number;
+  day: number;
+  x: number;
+  y: number;
+}
+
 export default function AbsenceHeatmap(): React.ReactElement {
   const [unidade, setUnidade] = useState(heatmapUnidadeOptions[0]);
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = useCallback(
+    (week: number, day: number, evt: React.MouseEvent<HTMLTableCellElement>) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setTooltip({
+        week,
+        day,
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top,
+      });
+    },
+    []
+  );
+
+  const handleMouseMove = useCallback(
+    (evt: React.MouseEvent<HTMLTableCellElement>) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setTooltip((prev) =>
+        prev
+          ? { ...prev, x: evt.clientX - rect.left, y: evt.clientY - rect.top }
+          : null
+      );
+    },
+    []
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setTooltip(null);
+  }, []);
+
+  const horasDetail =
+    tooltip ? heatmapHorasData[tooltip.week]?.[tooltip.day] : null;
+
+  const totalHoras = horasDetail
+    ? horasDetail.horasDevidas + horasDetail.horasNaoTrabalhadas
+    : 0;
 
   return (
-    <CardBase className="overflow-hidden">
+    <CardBase className="overflow-visible">
       <div className="mb-6 flex flex-col items-center gap-2 border-b border-gray-100 pb-6 text-center">
         <p className="text-lg font-semibold text-[#2c3545]">
           Mapa de Calor - Absenteísmo por Unidade
@@ -36,7 +96,8 @@ export default function AbsenceHeatmap(): React.ReactElement {
           ))}
         </select>
       </div>
-      <div className="min-w-0 overflow-x-auto pt-1">
+
+      <div ref={containerRef} className="relative min-w-0 overflow-x-auto pt-1">
         <table className="w-full border-collapse" role="grid">
           <thead>
             <tr>
@@ -61,7 +122,13 @@ export default function AbsenceHeatmap(): React.ReactElement {
                   <td
                     key={di}
                     className="border border-gray-200 p-2 text-center text-sm font-medium text-gray-800"
-                    style={{ backgroundColor: getHeatmapColor(val) }}
+                    style={{
+                      backgroundColor: getHeatmapColor(val),
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(evt) => handleMouseEnter(wi, di, evt)}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {val.toFixed(1)}%
                   </td>
@@ -70,7 +137,59 @@ export default function AbsenceHeatmap(): React.ReactElement {
             ))}
           </tbody>
         </table>
+
+        {/* Tooltip - Horas Devidas x Horas Não Trabalhadas */}
+        {tooltip && horasDetail && (
+          <div
+            className="pointer-events-none absolute z-50 w-[260px] rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
+            style={{
+              left: Math.min(tooltip.x + 20, 600),
+              top: Math.max(10, tooltip.y - 80),
+            }}
+          >
+            <p className="mb-3 text-sm font-semibold text-[#2c3545]">
+              Horas Devidas x Horas Não Trabalhadas
+            </p>
+
+            {/* Barra empilhada */}
+            <div className="mb-3 flex h-7 w-full overflow-hidden rounded-full">
+              <div
+                className="flex items-center justify-center text-[10px] font-bold text-white"
+                style={{
+                  width: `${(horasDetail.horasDevidas / totalHoras) * 100}%`,
+                  backgroundColor: "#F59E0B",
+                }}
+              >
+                {horasDetail.horasDevidas}h
+              </div>
+              <div
+                className="flex items-center justify-center text-[10px] font-bold text-white"
+                style={{
+                  width: `${(horasDetail.horasNaoTrabalhadas / totalHoras) * 100}%`,
+                  backgroundColor: "#EF4444",
+                }}
+              >
+                {horasDetail.horasNaoTrabalhadas}h
+              </div>
+            </div>
+
+            {/* Legenda */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 text-xs text-gray-700">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#F59E0B]" />
+                Horas Devidas:{" "}
+                <strong>{horasDetail.horasDevidas}h</strong>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-700">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#EF4444]" />
+                Horas Não Trabalhadas:{" "}
+                <strong>{horasDetail.horasNaoTrabalhadas}h</strong>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
       <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
         {heatmapLegend.map((item) => (
           <span

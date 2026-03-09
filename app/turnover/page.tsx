@@ -18,13 +18,13 @@ export default function TurnoverPage(): React.ReactElement {
         ))}
       </section>
 
-      <section>
-        <LatestDismissalsCard />
-      </section>
-
       <section className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
         <AdmissionsVsDismissalsChart />
         <DismissalReasonsCard />
+      </section>
+
+      <section>
+        <LatestDismissalsCard />
       </section>
 
       <section className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">

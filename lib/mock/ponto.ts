@@ -323,6 +323,19 @@ export const heatmapData: number[][] = [
   [1.0, 2.0, 1.8, 1.5, 2.1, 1.2, 0.5],
 ];
 
+/** Horas devidas e não trabalhadas por célula [semana][dia]. */
+export interface HeatmapHorasDetail {
+  horasDevidas: number;
+  horasNaoTrabalhadas: number;
+}
+
+export const heatmapHorasData: HeatmapHorasDetail[][] = [
+  [{ horasDevidas: 350, horasNaoTrabalhadas: 350 }, { horasDevidas: 280, horasNaoTrabalhadas: 180 }, { horasDevidas: 400, horasNaoTrabalhadas: 250 }, { horasDevidas: 320, horasNaoTrabalhadas: 150 }, { horasDevidas: 300, horasNaoTrabalhadas: 200 }, { horasDevidas: 200, horasNaoTrabalhadas: 180 }, { horasDevidas: 150, horasNaoTrabalhadas: 100 }],
+  [{ horasDevidas: 280, horasNaoTrabalhadas: 200 }, { horasDevidas: 500, horasNaoTrabalhadas: 420 }, { horasDevidas: 280, horasNaoTrabalhadas: 180 }, { horasDevidas: 400, horasNaoTrabalhadas: 320 }, { horasDevidas: 200, horasNaoTrabalhadas: 80 }, { horasDevidas: 300, horasNaoTrabalhadas: 200 }, { horasDevidas: 350, horasNaoTrabalhadas: 280 }],
+  [{ horasDevidas: 400, horasNaoTrabalhadas: 350 }, { horasDevidas: 300, horasNaoTrabalhadas: 200 }, { horasDevidas: 600, horasNaoTrabalhadas: 550 }, { horasDevidas: 500, horasNaoTrabalhadas: 420 }, { horasDevidas: 280, horasNaoTrabalhadas: 180 }, { horasDevidas: 200, horasNaoTrabalhadas: 100 }, { horasDevidas: 250, horasNaoTrabalhadas: 150 }],
+  [{ horasDevidas: 250, horasNaoTrabalhadas: 180 }, { horasDevidas: 350, horasNaoTrabalhadas: 300 }, { horasDevidas: 320, horasNaoTrabalhadas: 250 }, { horasDevidas: 300, horasNaoTrabalhadas: 200 }, { horasDevidas: 400, horasNaoTrabalhadas: 350 }, { horasDevidas: 280, horasNaoTrabalhadas: 180 }, { horasDevidas: 150, horasNaoTrabalhadas: 60 }],
+];
+
 export const heatmapLegend = [
   { label: "<1%", color: "#DCFCE7" },
   { label: "1-2%", color: "#BBF7D0" },
@@ -338,6 +351,23 @@ export const overtimeByClientData: OvertimeByClientItem[] = [
   { cliente: "JBS", horas: 20 },
   { cliente: "Itaú", horas: 15 },
   { cliente: "Itaú", horas: 15 },
+];
+
+// --- Horas Extras por Colaborador ---
+export interface OvertimeByColaboradorItem {
+  nome: string;
+  funcao: string;
+  cliente: string;
+  custo: string;
+  horas: number;
+}
+
+export const overtimeByColaboradorData: OvertimeByColaboradorItem[] = [
+  { nome: "Daniel M.", funcao: "Bombeiro", cliente: "Petrobrás - SP", custo: "R$ 1.898,25", horas: 513 },
+  { nome: "Rodrigo A.", funcao: "Vigilante", cliente: "Petrobrás - SP", custo: "R$ 1.898,25", horas: 513 },
+  { nome: "Ricardo S.", funcao: "Porteiro", cliente: "Petrobrás - SP", custo: "R$ 1.898,25", horas: 513 },
+  { nome: "Fernando D.", funcao: "Técnico de CFTV", cliente: "Petrobrás - SP", custo: "R$ 1.898,25", horas: 513 },
+  { nome: "Douglas R.", funcao: "Segurança", cliente: "Petrobrás - SP", custo: "R$ 1.898,25", horas: 513 },
 ];
 
 export const overtimeCostByMonthData: OvertimeCostByMonthItem[] = [
@@ -502,6 +532,116 @@ export const pontosForaZonaPorEstado: Record<string, number> = {
   AP: 4,
   RR: 3,
 };
+
+// --- Postos em Tempo Real (mapa) ---
+export interface PostoTempoRealItem {
+  clienteLocal: string;
+  nome: string;
+  descobertos: number;
+}
+
+export const postosTempoRealPorEstado: Record<string, { nomeEstado: string; postos: PostoTempoRealItem[] }> = {
+  SP: {
+    nomeEstado: "São Paulo",
+    postos: [
+      { clienteLocal: "Petrobras - Santos/SP", nome: "Portaria principal", descobertos: 513 },
+      { clienteLocal: "Petrobras - Santos/SP", nome: "Guarita Leste", descobertos: 500 },
+      { clienteLocal: "Petrobras - Santos/SP", nome: "CFTV – Monitoramento", descobertos: 300 },
+      { clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 200 },
+      { clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 100 },
+    ],
+  },
+  RJ: {
+    nomeEstado: "Rio de Janeiro",
+    postos: [
+      { clienteLocal: "Vale - Vitória/ES", nome: "Portaria Sul", descobertos: 320 },
+      { clienteLocal: "Vale - Vitória/ES", nome: "Central de Monitoramento", descobertos: 180 },
+    ],
+  },
+  MG: {
+    nomeEstado: "Minas Gerais",
+    postos: [
+      { clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Portaria Norte", descobertos: 150 },
+      { clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Balança de Carga", descobertos: 90 },
+    ],
+  },
+};
+
+export const postosTempoRealContagem: Record<string, number> = {
+  SP: 5,
+  RJ: 2,
+  MG: 2,
+  ES: 1,
+  BA: 1,
+  RS: 1,
+  PR: 1,
+};
+
+// --- Alerta de Plantão por Posto ---
+export interface AlertaPlantaoPostoItem {
+  posto: string;
+  pontos: number;
+}
+
+export const alertaPlantaoPostoData: AlertaPlantaoPostoItem[] = [
+  { posto: "Petrobras", pontos: 42 },
+  { posto: "Vale", pontos: 15 },
+  { posto: "JBS", pontos: 12 },
+  { posto: "Bradesco", pontos: 10 },
+  { posto: "Itaú", pontos: 8 },
+  { posto: "Ambev", pontos: 4 },
+  { posto: "Mag. Luiza", pontos: 3 },
+  { posto: "Mag. Luiza", pontos: 5 },
+  { posto: "Mag. Luiza", pontos: 5 },
+  { posto: "Mag. Luiza", pontos: 2 },
+];
+
+// --- Alerta de Plantão Colaborador ---
+export interface AlertaPlantaoColaboradorItem {
+  nome: string;
+  posto: string;
+  cliente: string;
+  pontos: number;
+}
+
+export const alertaPlantaoColaboradorData: AlertaPlantaoColaboradorItem[] = [
+  { nome: "Carlos M. Souza", posto: "Portaria principal", cliente: "Petrobras", pontos: 24 },
+  { nome: "Ana P. Costa", posto: "Guarita Leste", cliente: "Petrobras", pontos: 18 },
+  { nome: "Roberto S. Oliveira", posto: "CFTV - Monitoramento", cliente: "Vale", pontos: 15 },
+  { nome: "Daniel V. Ribeiro", posto: "Manutenção Elétrica", cliente: "JBS", pontos: 12 },
+  { nome: "Maria F. Lima", posto: "Recepção", cliente: "Bradesco", pontos: 10 },
+  { nome: "José A. Silva", posto: "Controle de Acesso", cliente: "Itaú", pontos: 8 },
+  { nome: "Fernanda T. Santos", posto: "Ronda externa", cliente: "Ambev", pontos: 6 },
+  { nome: "Paulo R. Mendes", posto: "Almoxarifado", cliente: "Mag. Luiza", pontos: 5 },
+];
+
+// --- Tipo de Registro ---
+export interface TipoRegistroItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export const tipoRegistroData: TipoRegistroItem[] = [
+  { label: "Registros Genuínos", value: 8200, color: "#DC2626" },
+  { label: "Registros Inseridos Manualmente", value: 1800, color: "#3B82F6" },
+];
+
+// --- Detalhamento de Faltas ---
+export interface DetalhamentoFaltasItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export const detalhamentoFaltasData: DetalhamentoFaltasItem[] = [
+  { label: "Férias", value: 1000, color: "#DC2626" },
+  { label: "Atestados", value: 5840, color: "#22C55E" },
+  { label: "Licenças", value: 1000, color: "#3B82F6" },
+  { label: "Descontadas em Folha", value: 1000, color: "#F59E0B" },
+];
+
+export const detalhamentoFaltasTotal = 8000;
 
 /** Heat na zona esperada por estado (coordenadas relativas ao estado para overlay). */
 export const heatZonaEsperadaPorEstado: Record<
