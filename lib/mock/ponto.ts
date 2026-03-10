@@ -534,35 +534,94 @@ export const pontosForaZonaPorEstado: Record<string, number> = {
 };
 
 // --- Postos em Tempo Real (mapa) ---
+export interface FuncionarioAtrasado {
+  nome: string;
+  cargo: string;
+  horaPrevista: string;
+  atraso: string;
+}
+
 export interface PostoTempoRealItem {
   clienteLocal: string;
   nome: string;
   descobertos: number;
+  funcionariosAtrasados: FuncionarioAtrasado[];
 }
 
 export const postosTempoRealPorEstado: Record<string, { nomeEstado: string; postos: PostoTempoRealItem[] }> = {
   SP: {
     nomeEstado: "São Paulo",
     postos: [
-      { clienteLocal: "Petrobras - Santos/SP", nome: "Portaria principal", descobertos: 513 },
-      { clienteLocal: "Petrobras - Santos/SP", nome: "Guarita Leste", descobertos: 500 },
-      { clienteLocal: "Petrobras - Santos/SP", nome: "CFTV – Monitoramento", descobertos: 300 },
-      { clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 200 },
-      { clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 100 },
+      {
+        clienteLocal: "Petrobras - Santos/SP", nome: "Portaria principal", descobertos: 513,
+        funcionariosAtrasados: [
+          { nome: "Carlos M. Souza", cargo: "Vigilante", horaPrevista: "06:00", atraso: "2h15min" },
+          { nome: "Ana P. Costa", cargo: "Porteiro", horaPrevista: "06:00", atraso: "1h45min" },
+          { nome: "Roberto S. Oliveira", cargo: "Vigilante", horaPrevista: "06:00", atraso: "1h10min" },
+        ],
+      },
+      {
+        clienteLocal: "Petrobras - Santos/SP", nome: "Guarita Leste", descobertos: 500,
+        funcionariosAtrasados: [
+          { nome: "Daniel V. Ribeiro", cargo: "Vigilante", horaPrevista: "06:00", atraso: "3h00min" },
+          { nome: "Maria F. Lima", cargo: "Controladora de Acesso", horaPrevista: "06:00", atraso: "45min" },
+        ],
+      },
+      {
+        clienteLocal: "Petrobras - Santos/SP", nome: "CFTV – Monitoramento", descobertos: 300,
+        funcionariosAtrasados: [
+          { nome: "José A. Silva", cargo: "Operador CFTV", horaPrevista: "07:00", atraso: "1h30min" },
+        ],
+      },
+      {
+        clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 200,
+        funcionariosAtrasados: [
+          { nome: "Fernanda T. Santos", cargo: "Técnica Elétrica", horaPrevista: "07:00", atraso: "2h00min" },
+          { nome: "Paulo R. Mendes", cargo: "Eletricista", horaPrevista: "07:00", atraso: "55min" },
+        ],
+      },
+      {
+        clienteLocal: "Petrobras - Santos/SP", nome: "Manutenção Elétrica", descobertos: 100,
+        funcionariosAtrasados: [
+          { nome: "Lucas G. Pereira", cargo: "Auxiliar Elétrico", horaPrevista: "08:00", atraso: "30min" },
+        ],
+      },
     ],
   },
   RJ: {
     nomeEstado: "Rio de Janeiro",
     postos: [
-      { clienteLocal: "Vale - Vitória/ES", nome: "Portaria Sul", descobertos: 320 },
-      { clienteLocal: "Vale - Vitória/ES", nome: "Central de Monitoramento", descobertos: 180 },
+      {
+        clienteLocal: "Vale - Vitória/ES", nome: "Portaria Sul", descobertos: 320,
+        funcionariosAtrasados: [
+          { nome: "Marcos A. Ferreira", cargo: "Vigilante", horaPrevista: "06:00", atraso: "2h30min" },
+          { nome: "Juliana R. Alves", cargo: "Porteira", horaPrevista: "06:00", atraso: "1h20min" },
+        ],
+      },
+      {
+        clienteLocal: "Vale - Vitória/ES", nome: "Central de Monitoramento", descobertos: 180,
+        funcionariosAtrasados: [
+          { nome: "Ricardo B. Nunes", cargo: "Operador", horaPrevista: "07:00", atraso: "1h00min" },
+        ],
+      },
     ],
   },
   MG: {
     nomeEstado: "Minas Gerais",
     postos: [
-      { clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Portaria Norte", descobertos: 150 },
-      { clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Balança de Carga", descobertos: 90 },
+      {
+        clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Portaria Norte", descobertos: 150,
+        funcionariosAtrasados: [
+          { nome: "Thiago L. Cardoso", cargo: "Vigilante", horaPrevista: "06:00", atraso: "1h45min" },
+          { nome: "Camila S. Rocha", cargo: "Recepcionista", horaPrevista: "07:00", atraso: "40min" },
+        ],
+      },
+      {
+        clienteLocal: "Gerdau - Ouro Branco/MG", nome: "Balança de Carga", descobertos: 90,
+        funcionariosAtrasados: [
+          { nome: "Eduardo M. Santos", cargo: "Operador de Balança", horaPrevista: "06:00", atraso: "1h15min" },
+        ],
+      },
     ],
   },
 };

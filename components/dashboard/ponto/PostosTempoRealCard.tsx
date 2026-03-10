@@ -8,9 +8,11 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 import CardBase from "@/components/dashboard/CardBase";
+import Modal from "@/components/ui/Modal";
 import {
   postosTempoRealPorEstado,
   postosTempoRealContagem,
+  type PostoTempoRealItem,
 } from "@/lib/mock/ponto";
 
 const GEO_URL =
@@ -70,6 +72,7 @@ const GeographyWithClick =
 
 export default function PostosTempoRealCard(): React.ReactElement {
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [selectedPosto, setSelectedPosto] = useState<PostoTempoRealItem | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const vals = Object.values(postosTempoRealContagem).filter(Number.isFinite);
@@ -89,6 +92,7 @@ export default function PostosTempoRealCard(): React.ReactElement {
   );
 
   return (
+    <>
     <CardBase title="Postos em Tempo Real" compact>
       <div ref={containerRef} className="flex gap-4">
         {/* Mapa principal do Brasil */}
@@ -204,7 +208,8 @@ export default function PostosTempoRealCard(): React.ReactElement {
                 {estadoData.postos.map((p, i) => (
                   <li
                     key={`${p.nome}-${i}`}
-                    className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2"
+                    className="flex cursor-pointer items-center justify-between rounded-lg bg-gray-50 px-3 py-2 transition hover:bg-gray-100"
+                    onClick={() => setSelectedPosto(p)}
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[10px] text-gray-500">
@@ -233,5 +238,52 @@ export default function PostosTempoRealCard(): React.ReactElement {
         </div>
       </div>
     </CardBase>
+
+      {/* Modal de detalhes do posto */}
+      <Modal
+        isOpen={!!selectedPosto}
+        onClose={() => setSelectedPosto(null)}
+        title={selectedPosto?.nome ?? ""}
+      >
+        {selectedPosto && (
+          <div className="space-y-5">
+            {/* Info do posto */}
+            <div className="rounded-xl bg-gray-50 p-4">
+              <p className="text-xs text-gray-500">{selectedPosto.clienteLocal}</p>
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-[#C44B6A]">
+                  {selectedPosto.descobertos}
+                </span>
+                <span className="text-sm text-gray-600">vagas descobertas</span>
+              </div>
+            </div>
+
+            {/* Lista de funcionários atrasados */}
+            <div>
+              <h3 className="mb-3 text-sm font-semibold text-[#2c3545]">
+                Funcionários Atrasados ({selectedPosto.funcionariosAtrasados.length})
+              </h3>
+              <div className="space-y-2">
+                {selectedPosto.funcionariosAtrasados.map((f, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-[#2c3545]">{f.nome}</p>
+                      <p className="text-xs text-gray-500">{f.cargo}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-400">Previsto: {f.horaPrevista}</p>
+                      <p className="text-sm font-semibold text-red-500">Atraso: {f.atraso}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
+    </>
   );
 }
