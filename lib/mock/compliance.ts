@@ -187,6 +187,40 @@ export const expiredDocsList: ExpiredDocItem[] = [
   },
 ];
 
+// --- Documentos Pendentes (Donut) ---
+export interface PendingDocItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export const pendingDocsData: PendingDocItem[] = [
+  { label: "ASO", value: 525, color: "#EF4444" },
+  { label: "NR - 35", value: 525, color: "#F59E0B" },
+  { label: "eSOCIAL S-2240", value: 525, color: "#3B82F6" },
+  { label: "NR - 35", value: 525, color: "#22C55E" },
+  { label: "NR - 35", value: 525, color: "#8B5CF6" },
+  { label: "Outros", value: 525, color: "#6B7280" },
+];
+
+// --- Documentos Pendentes por Cliente (Bars) ---
+export interface PendingDocsByClientItem {
+  cliente: string;
+  value: number;
+}
+
+export const pendingDocsByClientData: PendingDocsByClientItem[] = [
+  { cliente: "JBS", value: 1000 },
+  { cliente: "Mag. Luiza", value: 950 },
+  { cliente: "Vale", value: 720 },
+  { cliente: "Ambev", value: 600 },
+  { cliente: "B3", value: 420 },
+  { cliente: "Embraer", value: 400 },
+  { cliente: "Bradesco", value: 300 },
+  { cliente: "Petrobras", value: 100 },
+  { cliente: "Itaú", value: 70 },
+];
+
 export const upcomingDeadlinesData: {
   group: string;
   items: UpcomingDeadlineItem[];

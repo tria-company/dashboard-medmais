@@ -643,54 +643,6 @@ export const detalhamentoFaltasData: DetalhamentoFaltasItem[] = [
 
 export const detalhamentoFaltasTotal = 8000;
 
-// --- Mapa Brasil: Postos ON TIME por estado (status de cada posto) ---
-export type PostoOnTimeStatus = "regular" | "atrasado" | "em_aberto";
-
-export interface PostoOnTimeItem {
-  posto: string;
-  cliente: string;
-  cidade: string;
-  uf: string;
-  lat: number;
-  lng: number;
-  status: PostoOnTimeStatus;
-  colaboradores: number;
-}
-
-export const postosOnTimeData: PostoOnTimeItem[] = [
-  { posto: "Portaria Principal", cliente: "Petrobras", cidade: "Santos", uf: "SP", lat: -23.96, lng: -46.33, status: "regular", colaboradores: 45 },
-  { posto: "Guarita Leste", cliente: "Petrobras", cidade: "Santos", uf: "SP", lat: -23.94, lng: -46.30, status: "atrasado", colaboradores: 32 },
-  { posto: "Recepção", cliente: "Bradesco", cidade: "Osasco", uf: "SP", lat: -23.53, lng: -46.79, status: "regular", colaboradores: 28 },
-  { posto: "Controle de Acesso", cliente: "Itaú", cidade: "São Paulo", uf: "SP", lat: -23.56, lng: -46.65, status: "em_aberto", colaboradores: 18 },
-  { posto: "Controle de Acesso", cliente: "Ambev", cidade: "Jaguariúna", uf: "SP", lat: -22.70, lng: -46.99, status: "regular", colaboradores: 22 },
-  { posto: "Manutenção Elétrica", cliente: "JBS", cidade: "Lins", uf: "SP", lat: -21.68, lng: -49.75, status: "atrasado", colaboradores: 15 },
-  { posto: "Almoxarifado", cliente: "Natura", cidade: "Cajamar", uf: "SP", lat: -23.36, lng: -46.88, status: "regular", colaboradores: 12 },
-  { posto: "Refinaria REDUC", cliente: "Petrobras", cidade: "Duque de Caxias", uf: "RJ", lat: -22.49, lng: -43.28, status: "regular", colaboradores: 38 },
-  { posto: "Portaria Sul", cliente: "Vale", cidade: "Rio de Janeiro", uf: "RJ", lat: -22.91, lng: -43.17, status: "em_aberto", colaboradores: 25 },
-  { posto: "CFTV Centro", cliente: "Bradesco", cidade: "Rio de Janeiro", uf: "RJ", lat: -22.90, lng: -43.20, status: "atrasado", colaboradores: 20 },
-  { posto: "Balança de Carga", cliente: "Gerdau", cidade: "Ouro Branco", uf: "MG", lat: -20.52, lng: -43.69, status: "regular", colaboradores: 30 },
-  { posto: "Portaria Norte", cliente: "Vale", cidade: "Belo Horizonte", uf: "MG", lat: -19.92, lng: -43.94, status: "atrasado", colaboradores: 22 },
-  { posto: "Guarita Industrial", cliente: "Ambev", cidade: "Uberlândia", uf: "MG", lat: -18.92, lng: -48.28, status: "regular", colaboradores: 16 },
-  { posto: "CFTV - Monitoramento", cliente: "Vale", cidade: "Vitória", uf: "ES", lat: -20.32, lng: -40.34, status: "em_aberto", colaboradores: 35 },
-  { posto: "Ronda Externa", cliente: "Petrobras", cidade: "Vila Velha", uf: "ES", lat: -20.33, lng: -40.29, status: "regular", colaboradores: 18 },
-  { posto: "Portaria RLAM", cliente: "Petrobras", cidade: "Salvador", uf: "BA", lat: -12.97, lng: -38.51, status: "regular", colaboradores: 42 },
-  { posto: "Guarita Fábrica", cliente: "JBS", cidade: "Feira de Santana", uf: "BA", lat: -12.27, lng: -38.97, status: "atrasado", colaboradores: 14 },
-  { posto: "Controle de Acesso", cliente: "Gerdau", cidade: "Sapucaia do Sul", uf: "RS", lat: -29.83, lng: -51.15, status: "regular", colaboradores: 26 },
-  { posto: "Portaria Fábrica", cliente: "Ambev", cidade: "Porto Alegre", uf: "RS", lat: -30.03, lng: -51.23, status: "em_aberto", colaboradores: 19 },
-  { posto: "Recepção Centro", cliente: "Itaú", cidade: "Curitiba", uf: "PR", lat: -25.43, lng: -49.27, status: "regular", colaboradores: 24 },
-  { posto: "Guarita Industrial", cliente: "JBS", cidade: "Londrina", uf: "PR", lat: -23.31, lng: -51.16, status: "atrasado", colaboradores: 17 },
-  { posto: "CFTV Industrial", cliente: "Ambev", cidade: "Joinville", uf: "SC", lat: -26.30, lng: -48.85, status: "regular", colaboradores: 20 },
-  { posto: "Portaria Refap", cliente: "Petrobras", cidade: "Recife", uf: "PE", lat: -8.05, lng: -34.87, status: "atrasado", colaboradores: 28 },
-  { posto: "Guarita Norte", cliente: "JBS", cidade: "Recife", uf: "PE", lat: -8.04, lng: -34.88, status: "regular", colaboradores: 15 },
-  { posto: "Ronda Perimetral", cliente: "Bradesco", cidade: "Fortaleza", uf: "CE", lat: -3.72, lng: -38.52, status: "regular", colaboradores: 21 },
-  { posto: "Controle de Acesso", cliente: "JBS", cidade: "Goiânia", uf: "GO", lat: -16.68, lng: -49.25, status: "em_aberto", colaboradores: 23 },
-  { posto: "Portaria Industrial", cliente: "Ambev", cidade: "Manaus", uf: "AM", lat: -3.12, lng: -60.02, status: "regular", colaboradores: 30 },
-  { posto: "Guarita Mineração", cliente: "Vale", cidade: "Marabá", uf: "PA", lat: -5.37, lng: -49.13, status: "atrasado", colaboradores: 27 },
-  { posto: "Recepção", cliente: "Itaú", cidade: "Brasília", uf: "DF", lat: -15.79, lng: -47.88, status: "regular", colaboradores: 19 },
-  { posto: "Guarita Fazenda", cliente: "JBS", cidade: "Cuiabá", uf: "MT", lat: -15.60, lng: -56.10, status: "regular", colaboradores: 12 },
-  { posto: "Portaria Centro", cliente: "JBS", cidade: "Campo Grande", uf: "MS", lat: -20.44, lng: -54.65, status: "em_aberto", colaboradores: 14 },
-];
-
 /** Heat na zona esperada por estado (coordenadas relativas ao estado para overlay). */
 export const heatZonaEsperadaPorEstado: Record<
   string,

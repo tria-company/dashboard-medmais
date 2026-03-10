@@ -4,6 +4,8 @@ import ComplianceKpiMiniCard from "@/components/dashboard/compliance/ComplianceK
 import ComplianceProgressCard from "@/components/dashboard/compliance/ComplianceProgressCard";
 import ExpiredDocumentsCard from "@/components/dashboard/compliance/ExpiredDocumentsCard";
 import LaborRiskTableCard from "@/components/dashboard/compliance/LaborRiskTableCard";
+import PendingDocsByClientCard from "@/components/dashboard/compliance/PendingDocsByClientCard";
+import PendingDocsDonutCard from "@/components/dashboard/compliance/PendingDocsDonutCard";
 import UpcomingDeadlinesCard from "@/components/dashboard/compliance/UpcomingDeadlinesCard";
 import { kpiComplianceData } from "@/lib/mock/compliance";
 
@@ -24,6 +26,11 @@ export default function CompliancePage(): React.ReactElement {
 
       <section>
         <LaborRiskTableCard />
+      </section>
+
+      <section className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
+        <PendingDocsDonutCard />
+        <PendingDocsByClientCard />
       </section>
 
       <section className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">

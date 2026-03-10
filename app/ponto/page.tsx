@@ -11,7 +11,6 @@ import InconsistencyRankings from "@/components/dashboard/ponto/InconsistencyRan
 import KpiMiniCard from "@/components/dashboard/ponto/KpiMiniCard";
 import OvertimeByClient from "@/components/dashboard/ponto/OvertimeByClient";
 import OvertimeCostByMonth from "@/components/dashboard/ponto/OvertimeCostByMonth";
-import PostosOnTimeBrazilMapCard from "@/components/dashboard/ponto/PostosOnTimeBrazilMapCard";
 import PostosTempoRealCard from "@/components/dashboard/ponto/PostosTempoRealCard";
 import TipoRegistroCard from "@/components/dashboard/ponto/TipoRegistroCard";
 import { kpiPontoData } from "@/lib/mock/ponto";
@@ -20,10 +19,6 @@ export default function PontoPage(): React.ReactElement {
   return (
     <div className="flex flex-col gap-10">
       <FiltroPostoEmpresa />
-
-      <section>
-        <PostosOnTimeBrazilMapCard />
-      </section>
 
       {/* KPI Cards */}
       <section className="flex w-full flex-wrap items-center justify-center gap-8">
