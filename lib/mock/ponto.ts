@@ -703,6 +703,38 @@ export const detalhamentoFaltasData: DetalhamentoFaltasItem[] = [
 export const detalhamentoFaltasTotal = 8000;
 
 /** Heat na zona esperada por estado (coordenadas relativas ao estado para overlay). */
+// --- Postos ON TIME (mapa de status) ---
+export type PostoOnTimeStatus = "regular" | "atrasado" | "em_aberto";
+
+export interface PostoOnTimeItem {
+  posto: string;
+  cliente: string;
+  cidade: string;
+  uf: string;
+  lat: number;
+  lng: number;
+  colaboradores: number;
+  status: PostoOnTimeStatus;
+}
+
+export const postosOnTimeData: PostoOnTimeItem[] = [
+  { posto: "Portaria principal", cliente: "Petrobras", cidade: "Santos", uf: "SP", lat: -23.96, lng: -46.33, colaboradores: 42, status: "regular" },
+  { posto: "Guarita Leste", cliente: "Petrobras", cidade: "Santos", uf: "SP", lat: -23.94, lng: -46.30, colaboradores: 28, status: "atrasado" },
+  { posto: "CFTV - Monitoramento", cliente: "Vale", cidade: "Vitória", uf: "ES", lat: -20.32, lng: -40.34, colaboradores: 35, status: "regular" },
+  { posto: "Manutenção Elétrica", cliente: "JBS", cidade: "Lins", uf: "SP", lat: -21.68, lng: -49.75, colaboradores: 18, status: "em_aberto" },
+  { posto: "Recepção", cliente: "Bradesco", cidade: "Osasco", uf: "SP", lat: -23.53, lng: -46.79, colaboradores: 15, status: "regular" },
+  { posto: "Controle de Acesso", cliente: "Ambev", cidade: "Jaguariúna", uf: "SP", lat: -22.70, lng: -46.99, colaboradores: 22, status: "atrasado" },
+  { posto: "Ronda externa", cliente: "Itaú", cidade: "São Paulo", uf: "SP", lat: -23.59, lng: -46.68, colaboradores: 30, status: "regular" },
+  { posto: "Almoxarifado", cliente: "Natura", cidade: "Cajamar", uf: "SP", lat: -23.36, lng: -46.88, colaboradores: 12, status: "em_aberto" },
+  { posto: "Pátio de Manobras", cliente: "Embraer", cidade: "São José dos Campos", uf: "SP", lat: -23.22, lng: -45.90, colaboradores: 20, status: "regular" },
+  { posto: "Balança de Carga", cliente: "Gerdau", cidade: "Ouro Branco", uf: "MG", lat: -20.52, lng: -43.70, colaboradores: 10, status: "atrasado" },
+  { posto: "Portaria Sul", cliente: "Vale", cidade: "Rio de Janeiro", uf: "RJ", lat: -22.91, lng: -43.17, colaboradores: 25, status: "regular" },
+  { posto: "Central de Monitoramento", cliente: "Vale", cidade: "Rio de Janeiro", uf: "RJ", lat: -22.88, lng: -43.22, colaboradores: 18, status: "em_aberto" },
+  { posto: "Portaria Norte", cliente: "Gerdau", cidade: "Ouro Branco", uf: "MG", lat: -20.50, lng: -43.68, colaboradores: 14, status: "regular" },
+  { posto: "Portaria Principal", cliente: "JBS", cidade: "Goiânia", uf: "GO", lat: -16.69, lng: -49.27, colaboradores: 32, status: "atrasado" },
+  { posto: "Guarita Norte", cliente: "Ambev", cidade: "Jaguariúna", uf: "SP", lat: -22.72, lng: -47.00, colaboradores: 16, status: "regular" },
+];
+
 export const heatZonaEsperadaPorEstado: Record<
   string,
   HeatZonaEsperadaPoint[]
