@@ -45,8 +45,8 @@ export default function PendingDocsByClientCard(): React.ReactElement {
               tickLine={false}
             />
             <Tooltip
-              formatter={(value: number) => [
-                value.toLocaleString("pt-BR"),
+              formatter={(value) => [
+                Number(value).toLocaleString("pt-BR"),
                 "Documentos",
               ]}
               contentStyle={{
