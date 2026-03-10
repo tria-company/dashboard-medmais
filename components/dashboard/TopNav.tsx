@@ -59,7 +59,14 @@ export default function TopNav(): React.ReactElement {
               );
             })}
           </nav>
-          <div className="flex min-w-0 flex-1" aria-hidden />
+          <div className="flex min-w-0 flex-1 justify-end">
+            <a
+              href="https://dashboards-ecru-tau.vercel.app/"
+              className="rounded-full bg-[#2c3545] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#3d4a5c]"
+            >
+              Menu Principal
+            </a>
+          </div>
         </div>
       </header>
     </div>

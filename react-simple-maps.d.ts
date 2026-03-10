@@ -60,8 +60,14 @@ declare module "react-simple-maps" {
     children?: React.ReactNode;
   }
 
+  export interface MarkerProps {
+    coordinates: [number, number];
+    children?: React.ReactNode;
+  }
+
   export const ComposableMap: ComponentType<ComposableMapProps>;
   export const Geographies: ComponentType<GeographiesProps>;
   export const Geography: ComponentType<GeographyProps>;
   export const ZoomableGroup: ComponentType<ZoomableGroupProps>;
+  export const Marker: ComponentType<MarkerProps>;
 }
